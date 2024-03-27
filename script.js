@@ -72,3 +72,49 @@ map.on('load', () => {
         }
     });
 });
+
+const restaurantLayers = ['italian-restaurants', 'korean-restaurants', 'chinese-restaurants', 'restaurants-layer'];
+
+let popup = null; // This variable will hold the currently displayed popup
+
+restaurantLayers.forEach(function(layerId) {
+    // When the user moves their mouse over the layer, show the popup
+    map.on('mouseenter', layerId, function(e) {
+        var properties = e.features[0].properties;
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = `<h3>${properties.name}</h3>`;
+        description += `<p>Cuisine: ${properties.cuisine}</p>`;
+
+        // Check if the "diet:vegetarian" property exists and set to yes or if the cuisine is salad
+        if (properties['diet:vegetarian'] && properties['diet:vegetarian'].toLowerCase() === 'yes') {
+            description += '<p><strong>This restaurant offers vegetarian options.</strong></p>'; 
+        }
+        else if (properties.cuisine && properties.cuisine.toLowerCase() === 'salad') {
+            description += '<p><strong>This restaurant offers vegetarian options.</strong></p>';
+        }
+
+        // Check if the diet:halal property exists and set to yes
+        if (properties['diet:halal'] && properties['diet:halal'].toLowerCase() === 'yes') {
+            description += '<p><strong>This restaurant offers halal options.</strong></p>';
+        }
+
+        // Initialize or set the popup's content and location
+        if (!popup) {
+            popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+        }
+        popup.setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+    });
+
+    // When the mouse leaves the layer, remove the popup
+    map.on('mouseleave', layerId, function() {
+        if (popup) {
+            popup.remove();
+            popup = null; // Ensure the popup can be recreated next time the mouse enters
+        }
+    });
+});
