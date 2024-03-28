@@ -47,3 +47,23 @@
     width: 10px;
     margin-right: 5px; /*position of circle*/
 }
+
+.legend-key {
+    display: inline-block;
+    border-radius: 50%; /*curve border to make a circle*/
+    height: 10px; /*size of circle*/
+    width: 10px;
+    margin-right: 5px; /*position of circle*/
+}
+
+.map-data-container {
+    position: relative;
+    font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background: rgba(255, 255, 255, 0.8);
+    width: 260px;
+    top: 0;
+    left: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    overflow: visible;
+}
