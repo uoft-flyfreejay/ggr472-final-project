@@ -53,7 +53,7 @@ ADD DATA AS CHOROPLETH MAP ON MAP LOAD
 Use get expression to categorise data based on population values
 Same colours and threshold values are used in hardcoded legend
 --------------------------------------------------------------------*/
-// Add data source and draw initial visiualization of layer
+// Add data source and draw i   nitial visiualization of layer
 map.on('load', () => {
     map.addSource('restaurants', {
         type: 'geojson',
@@ -63,17 +63,57 @@ map.on('load', () => {
     // Add a layer for restaurants to display the data
     map.addLayer({
         id: 'restaurants-layer',
-        type: 'circle', // This example uses circles, but you can change it based on your needs
-        source: 'restaurants', // This should match the ID of the source added
+        type: 'circle',
+        source: 'restaurants',
         paint: {
-            // Define the visual appearance of the data (this is just an example)
-            'circle-radius': 6,
-            'circle-color': '#B42222'
+            'circle-color': [
+                'match',
+                ['get', 'cuisine'], 
+                'korean', '#FF0000', // Red for Korean
+
+                'japanese', '#800080', // Purple for Japanese
+                'sushi', '#800080', // Purple for Sushi
+
+                'chinese', '#FFA500', // Orange for Chinese
+                'asian', '#FFA500', // Orange for Asian
+
+                'italian', '#008000', // Green for Italian
+                'german', '#008000', // Green for German
+                'french', '#008000', // Green for French
+
+
+                'turkish', '#FF4500', // OrangeRed for Turkish
+
+                'burger', '#0000FF', // Blue for burgers
+                'pizza', '#0000FF', // Blue for pizza
+                'fried chicken', '#0000FF', // Blue for fried chicken
+                'american', '#0000FF', // Blue for American
+                'steak_house', '#0000FF', // Blue for steak houses
+                'breakfast', '#0000FF', // Blue for breakfast
+                'chicken', '#0000FF', // Blue for chicken
+
+                'salad', '#00FF00', // Lime for salads
+
+                //use different colour thats not yellow
+                'thai',  '#FFD700', // Gold for Thai
+                'vietnamese', '#FFD700', // Yellow for Vietnamese
+                'malaysian', '#FFD700', // Yellow for Malaysian
+                'filipino', '#FFD700', // Yellow for Filipino
+                'indian', '#FFD700', // Pink for Indian
+
+                'ethiopian', '#800000', // Maroon for Ethiopian
+                /* default color */ '#808080' // Grey for anything else not listed
+            ],
+            'circle-radius': 6
         }
     });
 });
 
-const restaurantLayers = ['italian-restaurants', 'korean-restaurants', 'chinese-restaurants', 'restaurants-layer'];
+
+/*--------------------------------------------------------------------
+ADD POP ON HOVER
+--------------------------------------------------------------------*/
+const restaurantLayers = ['restaurants-layer'];
 
 let popup = null; // This variable will hold the currently displayed popup
 
