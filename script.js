@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------
 INITIALIZE MAP
 --------------------------------------------------------------------*/
-mapboxgl.accessToken = ''; //ADD YOUR ACCESS TOKEN HERE
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmx5ZnJlZWpheSIsImEiOiJjbHI3emdhZzUyamtqMmpteXNtaGJxbGVyIn0.SrkrFYfxjCieaBwWWdMb-w'; //ADD YOUR ACCESS TOKEN HERE
 
 const map = new mapboxgl.Map({
     container: 'map',
@@ -99,7 +99,8 @@ map.on('load', () => {
                 'vietnamese', '#FFD700', // Yellow for Vietnamese
                 'malaysian', '#FFD700', // Yellow for Malaysian
                 'filipino', '#FFD700', // Yellow for Filipino
-                'indian', '#FFD700', // Pink for Indian
+
+                'indian', '#FF1493', // DeepPink for Indian
 
                 'ethiopian', '#800000', // Maroon for Ethiopian
                 /* default color */ '#808080' // Grey for anything else not listed
@@ -157,4 +158,45 @@ restaurantLayers.forEach(function(layerId) {
             popup = null; // Ensure the popup can be recreated next time the mouse enters
         }
     });
+});
+
+/*--------------------------------------------------------------------
+ADD LEGEND
+--------------------------------------------------------------------*/
+const legendItems = [
+    { color: '#FF0000', label: 'Korean' },
+    { color: '#800080', label: 'Japanese ' },
+    { color: '#FFA500', label: 'Chinese / Asian' },
+    { color: '#008000', label: 'European' },
+    { color: '#FF4500', label: 'Middle Eastern' },
+    { color: '#0000FF', label: 'Western' },
+    { color: '#00FF00', label: 'Salad' },
+    { color: '#FFD700', label: 'Southeast Asian' },
+    { color: '#FF1493', label: 'Indian' },
+    { color: '#800000', label: 'African' },
+    { color: '#808080', label: 'Other' },
+];
+
+
+const legend = document.getElementById('legend');
+
+legendItems.forEach(item => {
+    const entry = document.createElement('div');
+    const key = document.createElement('span');
+    key.className = 'legend-key';
+    key.style.backgroundColor = item.color;
+
+    const value = document.createTextNode(item.label);
+    
+    entry.appendChild(key);
+    entry.appendChild(value);
+    legend.appendChild(entry);
+});
+
+
+/*--------------------------------------------------------------------
+ADD A LEGEND TOGGLE
+--------------------------------------------------------------------*/
+document.getElementById('legendcheck').addEventListener('change', function() {
+    document.getElementById('legend').style.display = this.checked ? 'block' : 'none'; // Change display of legend based on check box
 });
