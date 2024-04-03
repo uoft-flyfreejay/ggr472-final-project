@@ -283,7 +283,6 @@ let newpoint = {
 
 map.on('click', (e) => {
     // if a point hasn't already been added, allow 1 point to be added (referenced from ChatGPT)
-    if (!pointAdded) {
     // Store clicked point as geojson feature
     const clickedpoint = {
         'type': 'Feature',
@@ -302,7 +301,7 @@ map.on('click', (e) => {
 
     // a point has been added
     pointAdded = true;
-    };
+    
 });
 
 document.getElementById('0.5km').addEventListener('change', function() {
