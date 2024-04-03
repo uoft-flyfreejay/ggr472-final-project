@@ -30,7 +30,7 @@
     <!-- LEGEND -->
     <div id='legend' class='legend'>
         <h4>Types of Cuisine</h4>
-        <!-- Conents of legend will now be added here -->
+        <!-- Contents of legend will now be added here -->
     </div>
 
     <!-- INTERACTIVITY -->
@@ -41,7 +41,44 @@
             <input class="form-check-input" type="checkbox" value="" id="legendcheck" checked>
             Show legend
         </div>
-
+        <form>
+            <fieldset id="dietset">
+                <label>Select Diet Type</label>
+                <select id="diet" name="diet">
+                    <option value="" disabled selected>Select Options...</option>
+                    <option value="diet:gluten_free">Gluten-free</option>
+                    <option value="diet:non-vegetarian">Non-Vegetarian</option>
+                    <option value="diet:halal">Halal</option>
+                    <option value="diet:meat">Meat</option>
+                    <option value="diet:vegetarian">Vegetarian</option>
+                    <option value="diet:vegan">Vegan</option>
+                    <option value="All">Show all</option>
+                </select>
+            </fieldset>
+        </form>
+        <form>
+            <fieldset id="ethnicityset">
+                <label>Select Ethnicity</label>
+                <select id="ethno" name="ethno">
+                    <option value="" disabled selected>Select Options...</option>
+                    <option value="korean">Korean</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="italian">Italian</option>
+                    <option value="german">German</option>
+                    <option value="french">French</option>
+                    <option value="turkish">Turkish</option>
+                    <option value="american">American</option>
+                    <option value="thai">Thai</option>
+                    <option value="vietnamese">Vietnamese</option>
+                    <option value="malaysian">Malaysian</option>
+                    <option value="filipino">Filipino</option>
+                    <option value="indian">Indian</option>
+                    <option value="ethiopian">Ethiopian</option>
+                    <option value="All">Show all</option>
+                </select>
+            </fieldset>
+        </form>
     </div>
 
     <script src="script.js"></script>

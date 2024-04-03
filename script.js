@@ -123,9 +123,14 @@ restaurantLayers.forEach(function(layerId) {
     map.on('mouseenter', layerId, function(e) {
         var properties = e.features[0].properties;
         var coordinates = e.features[0].geometry.coordinates.slice();
+  
         var description = `<h3>${properties.name}</h3>`;
-        description += `<p>Cuisine: ${properties.cuisine}</p>`;
 
+        // Check if the type of cuisine exists and adds to description
+        if (properties.cuisine !== undefined) {
+            description += `<p>Cuisine: ${properties.cuisine}</p>`;
+        }
+        
         // Check if the "diet:vegetarian" property exists and set to yes or if the cuisine is salad
         if (properties['diet:vegetarian'] && properties['diet:vegetarian'].toLowerCase() === 'yes') {
             description += '<p><strong>This restaurant offers vegetarian options.</strong></p>'; 
@@ -138,6 +143,18 @@ restaurantLayers.forEach(function(layerId) {
         if (properties['diet:halal'] && properties['diet:halal'].toLowerCase() === 'yes') {
             description += '<p><strong>This restaurant offers halal options.</strong></p>';
         }
+        // Check if the address property exists and adds to description
+        if ((properties["addr:housenumber"] && properties["addr:street"]&& properties["addr:city"]) !== undefined) {
+           description += `<p> Address: ${properties["addr:housenumber"] +' '+ properties["addr:street"] +', '+ properties["addr:city"]}</p>`;
+        }
+        // Check if the restaurant hours exists and adds to description
+        if (properties["opening_hours"] !== undefined) {
+            description += `<p> Hours: ${properties["opening_hours"]}</p>`;
+        }
+        // Check if the phone # exists and adds to description
+        if (properties.phone !== undefined) {
+            description += `<p> Phone #: ${properties.phone}</p>`;
+         }
 
         // Initialize or set the popup's content and location
         if (!popup) {
@@ -195,8 +212,60 @@ legendItems.forEach(item => {
 
 
 /*--------------------------------------------------------------------
-ADD A LEGEND TOGGLE
+ADD A FILTER TOGGLE
 --------------------------------------------------------------------*/
 document.getElementById('legendcheck').addEventListener('change', function() {
     document.getElementById('legend').style.display = this.checked ? 'block' : 'none'; // Change display of legend based on check box
+});
+
+let filterValue = '';
+
+document.getElementById('dietset').addEventListener('change', function() {
+    filterValue = document.getElementById('diet').value;
+
+    console.log(filterValue); // Useful for testing whether correct values are returned from dropdown selection
+
+    if (filterValue == 'All') {
+        map.setFilter(
+            'restaurants-layer',
+            ['has', 'name'] // Returns all points from layer that have a value in field
+        );
+    } else {
+        map.setFilter(
+            'restaurants-layer',
+            ['==', ['get', filterValue], 'yes' || 'only'] // returns points with value that matches dropdown selection
+        );
+    }   
+});
+
+let ethnoValue;
+
+document.getElementById('ethnicityset').addEventListener('change', function() {
+    ethnoValue = document.getElementById('ethno').value;
+
+    console.log(ethnoValue); // Useful for testing whether correct values are returned from dropdown selection
+
+    if ((ethnoValue == 'All' && filterValue === undefined)||(ethnoValue == 'All' && filterValue === 'All')) {
+        map.setFilter(
+            'restaurants-layer',
+            ['has', 'cuisine'] // Returns all points from layer that have a value in field
+        );
+    } else if (ethnoValue == 'All' && filterValue !== undefined) {
+        map.setFilter(
+            'restaurants-layer', ['all',
+            ['has', 'cuisine'],
+            ['==', ['get', filterValue], 'yes' || 'only'] // returns points with value that matches dropdown selection
+        ]);
+    }else if ((filterValue === undefined)|| (filterValue === 'All')){
+        map.setFilter(
+            'restaurants-layer',
+            ['==', ['get', 'cuisine'], ethnoValue] // returns points with value that matches dropdown selection
+        );
+    }else {
+        map.setFilter(
+            'restaurants-layer', ['all',
+            ['==', ['get', 'cuisine'], ethnoValue],
+            ['==', ['get', filterValue], 'yes' || 'only'] // returns points with value that matches dropdown selection
+        ]);
+    }    
 });
