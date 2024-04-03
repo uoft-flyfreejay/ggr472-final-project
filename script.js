@@ -218,7 +218,7 @@ document.getElementById('legendcheck').addEventListener('change', function() {
     document.getElementById('legend').style.display = this.checked ? 'block' : 'none'; // Change display of legend based on check box
 });
 
-let filterValue = '';
+let filterValue = 'All';
 
 document.getElementById('dietset').addEventListener('change', function() {
     filterValue = document.getElementById('diet').value;
