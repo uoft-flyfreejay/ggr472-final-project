@@ -269,3 +269,161 @@ document.getElementById('ethnicityset').addEventListener('change', function() {
         ]);
     }    
 });
+
+/*--------------------------------------------------------------------
+BUFFERING RESTAURANTS BY DISTANCE
+--------------------------------------------------------------------*/
+
+// assume no point has been added yet
+let pointAdded = false;
+let newpoint = {
+    'type': 'FeatureCollection',
+    'features': []
+};
+
+map.on('click', (e) => {
+    // if a point hasn't already been added, allow 1 point to be added (referenced from ChatGPT)
+    if (!pointAdded) {
+    // Store clicked point as geojson feature
+    const clickedpoint = {
+        'type': 'Feature',
+        'geometry': {
+            'type': 'Point',
+            'coordinates': [e.lngLat.lng, e.lngLat.lat] // Access map coords of mouse click
+        }
+    };
+
+    // Add clicked point to previously empty geojson FeatureCollection variable using push method
+    restaurantsjson.features.push(clickedpoint);
+    newpoint.features.push(clickedpoint);
+
+    // Update the datasource to include clicked points
+    map.getSource('restaurants').setData(restaurantsjson);
+
+    // a point has been added
+    pointAdded = true;
+    };
+});
+
+document.getElementById('0.5km').addEventListener('change', function() {
+    if (this.checked) { // making a checkbox toggle for the buffer
+
+    // Create empty featurecollection for buffers
+    let buffresult = {
+        "type": "FeatureCollection",
+        "features": []
+    };
+
+
+    // Loop through each point in geojson and use turf buffer function to create 0.5km buffer of input points
+    newpoint.features.forEach((feature) => {
+            let buffer = turf.buffer(feature, 0.5); // create buffer variable
+            buffresult.features.push(buffer); // append buffer polygons to buffresult
+    });
+
+    // add buffresult as data source
+    map.addSource('buff', {
+        "type": "geojson",
+        "data": buffresult  // use buffer geojson variable as data source
+    })
+
+    // Show buffers on map using styling
+    map.addLayer({
+        "id": "inputpointbuff",
+        "type": "fill",
+        "source": "buff",
+        "paint": {
+            'fill-color': "#03d3fc",
+            'fill-opacity': 0.2,
+            'fill-outline-color': "black"
+            }
+        });
+
+    } else {
+        // Remove buffer layer and source
+        map.removeLayer('inputpointbuff');
+        map.removeSource('buff');
+    }
+    });
+
+document.getElementById('1km').addEventListener('change', function() {
+    if (this.checked) {
+
+    // document.getElementById('buffbutton').disabled = true; // disable  button after click
+
+    // Create empty featurecollection for buffers
+    let buffresult = {
+        "type": "FeatureCollection",
+        "features": []
+    };
+
+
+    // Loop through each point in geojson and use turf buffer function to create 0.5km buffer of input points
+    newpoint.features.forEach((feature) => {
+            let buffer = turf.buffer(feature, 1); // create buffer variable
+            buffresult.features.push(buffer); // append buffer polygons to buffresult
+    });
+
+    map.addSource('buff', {
+        "type": "geojson",
+        "data": buffresult  // use buffer geojson variable as data source
+    })
+
+    // Show buffers on map using styling
+    map.addLayer({
+        "id": "inputpointbuff",
+        "type": "fill",
+        "source": "buff",
+        "paint": {
+            'fill-color': "#a903fc",
+            'fill-opacity': 0.2,
+            'fill-outline-color': "black"
+            }
+        });
+    } else {
+        // Remove buffer layer and source
+        map.removeLayer('inputpointbuff');
+        map.removeSource('buff');
+    }
+    });
+
+document.getElementById('2km').addEventListener('change', function() {
+    if (this.checked) {
+
+    // document.getElementById('buffbutton').disabled = true; // disable  button after click
+
+    // Create empty featurecollection for buffers
+    let buffresult = {
+        "type": "FeatureCollection",
+        "features": []
+    };
+
+
+    // Loop through each point in geojson and use turf buffer function to create 0.5km buffer of input points
+    newpoint.features.forEach((feature) => {
+            let buffer = turf.buffer(feature, 2); // create buffer variable
+            buffresult.features.push(buffer); // append buffer polygons to buffresult
+    });
+
+    map.addSource('buff', {
+        "type": "geojson",
+        "data": buffresult  // use buffer geojson variable as data source
+    })
+
+    // Show buffers on map using styling
+    map.addLayer({
+        "id": "inputpointbuff",
+        "type": "fill",
+        "source": "buff",
+        "paint": {
+            'fill-color': "#fc037b",
+            'fill-opacity': 0.2,
+            'fill-outline-color': "black"
+            }
+        });
+    } else {
+        // Remove buffer layer and source
+        map.removeLayer('inputpointbuff');
+        map.removeSource('buff');
+    }
+    });
